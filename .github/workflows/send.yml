@@ -1,0 +1,18 @@
+name: 钉钉定时群通知
+on:
+  schedule:
+    # 北京时间 每天 9:00 执行，修改后面 0 0 * * 1-5 可改时间
+    - cron: '0 1 * * 1-5'
+  workflow_dispatch:
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 发送钉钉消息
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.DING_WEBHOOK }}
+          method: 'POST'
+          contentType: 'application/json'
+          data: '{"msgtype":"text","text":{"content":"通知：请大家遇到异常或刊登错误及时反馈！"}}'
